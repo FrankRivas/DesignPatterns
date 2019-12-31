@@ -18,33 +18,30 @@ export class AuthService {
     private readonly userRepository: Repository<Users>,
   ) {}
   async validateUser(username: string, pass: string): Promise<{}> {
-    let userDB: Users | undefined;
+    let userFromDB: Users | undefined;
     try {
-      userDB = await this.userRepository.findOne({
-        where: [{ username: username }],
+      userFromDB = await this.userRepository.findOne({
+        where: [{ username }],
       });
     } catch (error) {
       throw new HttpException('', error);
     }
-    if (userDB) {
-      let comparation = false;
-      try {
-        comparation = await bcrypt.compare(pass, userDB.password);
-      } catch (error) {
-        throw new HttpException('', error);
-      }
-      //if (userDB.password === pass) {
-      if (comparation) {
-        const { password, ...result } = userDB;
-        return result;
-      } else {
-        // If invalid password
-        throw new UnauthorizedException('Wrong Credentials');
-      }
-    } else {
+    if (!userFromDB) {
       // If user does not exist
       throw new UnauthorizedException('Wrong Credentials');
     }
+    let passwordMatch = false;
+    try {
+      passwordMatch = await bcrypt.compare(pass, userFromDB.password);
+    } catch (error) {
+      throw new HttpException('', error);
+    }
+    if (!passwordMatch) {
+      // If invalid password
+      throw new UnauthorizedException('Wrong Credentials');
+    }
+    const { password, ...result } = userFromDB;
+    return result;
   }
 
   login(user: UserDto): {} {

@@ -46,7 +46,7 @@ export class UserNewsService {
     }
     try {
       news = await this.newsRepository.findOne({
-        where: [{ url: url }],
+        where: [{ url }],
       });
     } catch (error) {
       throw new HttpException('', error);
@@ -62,7 +62,7 @@ export class UserNewsService {
       }
     }
     const ntu = {
-      news: news,
+      news,
       user,
       sharedBy: toUserId ? toUserId : undefined,
     };

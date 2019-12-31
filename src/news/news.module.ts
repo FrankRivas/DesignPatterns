@@ -5,11 +5,14 @@ import { ConfigModule } from '@nestjs/config';
 import { NYTNewsService } from './nytnews.service';
 import { NewsMiddleware } from './news.middleware';
 import { NewsAPIService } from './newsapi.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { News } from './entities/news.entity';
 
 @Module({
-  imports: [ConfigModule, HttpModule],
+  imports: [ConfigModule, HttpModule, TypeOrmModule.forFeature([News])],
   controllers: [NewsController],
   providers: [GuardiaNewsService, NYTNewsService, NewsAPIService],
+  exports: [TypeOrmModule],
 })
 export class NewsModule {
   configure(consumer: MiddlewareConsumer): void {

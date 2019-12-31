@@ -7,15 +7,17 @@ import { Users } from './entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserNewsService } from './usernews.service';
 import { NewToUser } from './entities/usernews.entity';
-import { News } from 'src/news/entities/news.entity';
+import { NewsModule } from 'src/news/news.module';
 
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([Users, NewToUser, News]),
+    TypeOrmModule.forFeature([Users, NewToUser]),
     AuthModule,
+    NewsModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UserNewsService],
+  exports: [TypeOrmModule],
 })
 export class UsersModule {}

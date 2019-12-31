@@ -1,8 +1,8 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsUrl } from 'class-validator';
 
 export class SaveNewsDto {
   @IsNotEmpty()
-  @IsString()
+  @IsUrl()
   url: string;
 
   constructor(url: string) {

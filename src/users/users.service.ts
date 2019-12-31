@@ -68,15 +68,14 @@ export class UsersService {
     pass: string,
   ): Promise<Users | undefined> {
     const user = await this.getUserByParam('id', userId);
-    if (user) {
-      try {
-        user.password = await bcrypt.hash(pass, 10);
-        return this.userRepository.save(user);
-      } catch (error) {
-        throw new HttpException('', error);
-      }
-    } else {
+    if (!user) {
       throw new BadRequestException();
+    }
+    try {
+      user.password = await bcrypt.hash(pass, 10);
+      return this.userRepository.save(user);
+    } catch (error) {
+      throw new HttpException('', error);
     }
   }
 }

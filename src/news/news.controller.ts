@@ -30,25 +30,21 @@ export class NewsController {
     let searchGuardian;
     let searchNYT;
     let searchNewsApi;
-    if (searcher) {
-      switch (searcher) {
-        case 'nyt':
-          searchNYT = this.nytnewsService.search(searchedWord, page);
-          return searchNYT;
-        case 'guardian':
-          searchGuardian = this.newsService.search(searchedWord, page);
-          return searchGuardian;
-        case 'newsapi':
-          searchNewsApi = this.newsApiService.search(searchedWord);
-          return searchNewsApi;
-        default:
-          throw new NotFoundException('Invalid url');
-      }
-    } else {
+    if (!searcher) {
       searchGuardian = this.newsService.search(searchedWord, page);
       searchNYT = this.nytnewsService.search(searchedWord, page);
       searchNewsApi = this.newsApiService.search(searchedWord);
       return mergeNews(searchNYT, searchGuardian, searchNewsApi);
+    }
+    switch (searcher) {
+      case 'nyt':
+        return this.nytnewsService.search(searchedWord, page);
+      case 'guardian':
+        return this.newsService.search(searchedWord, page);
+      case 'newsapi':
+        return this.newsApiService.search(searchedWord);
+      default:
+        throw new NotFoundException('Invalid url');
     }
   }
 }

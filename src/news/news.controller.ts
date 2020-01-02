@@ -33,9 +33,9 @@ export class NewsController {
     let searchNewsApi;
     const searchStrategy = new StrategyContext();
     if (!searcher) {
-      //searchGuardian = this.guardiaNewService.search(searchedWord, page);
-      //searchNYT = this.nytnewsService.search(searchedWord, page);
-      //searchNewsApi = this.newsApiService.search(searchedWord, page);
+      // searchGuardian = this.guardiaNewService.search(searchedWord, page);
+      // searchNYT = this.nytnewsService.search(searchedWord, page);
+      // searchNewsApi = this.newsApiService.search(searchedWord, page);
       searchStrategy.setStrategy(this.nytnewsService);
       searchNYT = searchStrategy.searchNews(searchedWord, page);
       searchStrategy.setStrategy(this.guardiaNewService);

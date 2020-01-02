@@ -7,9 +7,14 @@ import { NewsMiddleware } from './news.middleware';
 import { NewsAPIService } from './services/strategies/newsapi.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { News } from './entities/news.entity';
+import { NewsRepository } from './repository/newsRepository';
 
 @Module({
-  imports: [ConfigModule, HttpModule, TypeOrmModule.forFeature([News])],
+  imports: [
+    ConfigModule,
+    HttpModule,
+    TypeOrmModule.forFeature([News, NewsRepository]),
+  ],
   controllers: [NewsController],
   providers: [GuardiaNewsService, NYTNewsService, NewsAPIService],
   exports: [TypeOrmModule],

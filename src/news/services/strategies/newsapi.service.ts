@@ -1,10 +1,9 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { HttpService } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { MyNews, NewsAPI } from '../../interfaces/news';
 import { ConfigService } from '@nestjs/config';
-import { codes } from '../../../utils/helpers';
 import { Strategy } from 'src/news/interfaces/strategy';
 
 @Injectable()
@@ -32,18 +31,7 @@ export class NewsAPIService implements Strategy {
       .get(`${baseUrl}q=${searchedWord}&apiKey=${key}${filters}&page=${page}`)
       .pipe(
         map(response => response.data.articles.map(this.transform)),
-        catchError(err => {
-          if (err.response) {
-            return throwError(
-              new HttpException(
-                codes[err.response.status],
-                err.response.status,
-              ),
-            );
-          } else {
-            throw err;
-          }
-        }),
+        catchError(() => throwError(new ServiceUnavailableException())),
       );
   }
 }

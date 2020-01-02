@@ -4,26 +4,20 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Users } from './entities/user.entity';
+import { Users } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { RegisterDto } from './dto/register.dto';
-import { UserRepository } from './repository/userRepository';
+import { RegisterDto } from '../dto/register.dto';
+import { UserRepository } from '../repositories/userRepository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(Users)
-    private readonly userRepository: Repository<Users>,
-    private readonly userQueryRepository: UserRepository,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async singup(user: RegisterDto): Promise<Users | undefined> {
     let invalidUsername: Users | undefined;
     let invalidEmail: Users | undefined;
     try {
-      invalidUsername = await this.userQueryRepository.getUserByParam(
+      invalidUsername = await this.userRepository.getUserByParam(
         'username',
         user.username,
       );
@@ -34,7 +28,7 @@ export class UsersService {
       throw new ConflictException();
     }
     try {
-      invalidEmail = await this.userQueryRepository.getUserByParam(
+      invalidEmail = await this.userRepository.getUserByParam(
         'email',
         user.email,
       );
@@ -62,7 +56,7 @@ export class UsersService {
   ): Promise<Users | undefined> {
     let user: Users | undefined;
     try {
-      user = await this.userQueryRepository.getUserByParam('id', userId);
+      user = await this.userRepository.getUserByParam('id', userId);
     } catch (error) {
       throw new HttpException('', error);
     }

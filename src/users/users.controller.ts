@@ -23,6 +23,7 @@ import { SaveNewsDto } from './dto/savenews.dto';
 import { ValidationSaveNewsPipe } from './pipes/savenews.pipe';
 import { PasswordDto } from './dto/password.dto';
 import { ValidationPasswordPipe } from './pipes/password.pipe';
+import { User } from './decorators/userDecorator';
 
 @Controller('users')
 export class UsersController {
@@ -41,7 +42,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard('local'))
   @Post('/signin')
-  async signin(@Body() user: UserDto): Promise<{}> {
+  async signin(@User() user: UserDto): Promise<{}> {
     return this.authService.login(user);
   }
 

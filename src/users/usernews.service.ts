@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  HttpException,
-  BadRequestException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import { News } from '../news/entities/news.entity';
@@ -100,7 +95,7 @@ export class UserNewsService {
       throw new HttpException('', error);
     }
     if (!usersNews) {
-      throw new UnprocessableEntityException();
+      throw new BadRequestException();
     }
     return usersNews?.newsToUser.map(this.transformData);
   }
@@ -117,6 +112,15 @@ export class UserNewsService {
   async getSharedArticles(
     user: number,
   ): Promise<UserSharedNewsInterface[] | undefined> {
+    let userFromDB: Users | undefined;
+    try {
+      userFromDB = await this.userRepository.findOne(user);
+    } catch (error) {
+      throw new HttpException('', error);
+    }
+    if (!userFromDB) {
+      throw new BadRequestException();
+    }
     let usersNews: NewToUser[];
     try {
       usersNews = await this.newsToUserRepository.find({
@@ -131,9 +135,6 @@ export class UserNewsService {
       });
     } catch (error) {
       throw new HttpException('', error);
-    }
-    if (usersNews.length < 1) {
-      throw new UnprocessableEntityException();
     }
     return usersNews.map(this.transformSharedNews);
   }

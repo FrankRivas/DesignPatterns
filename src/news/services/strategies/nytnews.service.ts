@@ -2,12 +2,13 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { HttpService } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { MyNews, NYTNews } from './interfaces/news';
+import { MyNews, NYTNews } from '../../interfaces/news';
 import { ConfigService } from '@nestjs/config';
-import { codes } from '../utils/helpers';
+import { codes } from '../../../utils/helpers';
+import { Strategy } from 'src/news/interfaces/strategy';
 
 @Injectable()
-export class NYTNewsService {
+export class NYTNewsService implements Strategy {
   constructor(
     private readonly http: HttpService,
     private readonly configService: ConfigService,
@@ -23,7 +24,7 @@ export class NYTNewsService {
     return newArt;
   }
 
-  search(searchedWord: string, page = '1'): Observable<MyNews[]> {
+  search(searchedWord: string, page: string): Observable<MyNews[]> {
     const key = this.configService.get<string>('NYT_KEY');
     const baseUrl = this.configService.get<string>('NYT_URL_BASE');
     const filters = this.configService.get<string>('NYT_URL_FILTERS');

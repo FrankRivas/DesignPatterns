@@ -1,10 +1,10 @@
 import { Module, HttpModule, MiddlewareConsumer } from '@nestjs/common';
 import { NewsController } from './news.controller';
-import { GuardiaNewsService } from './guardianews.service';
+import { GuardiaNewsService } from './services/strategies/guardianews.service';
 import { ConfigModule } from '@nestjs/config';
-import { NYTNewsService } from './nytnews.service';
+import { NYTNewsService } from './services/strategies/nytnews.service';
 import { NewsMiddleware } from './news.middleware';
-import { NewsAPIService } from './newsapi.service';
+import { NewsAPIService } from './services/strategies/newsapi.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { News } from './entities/news.entity';
 

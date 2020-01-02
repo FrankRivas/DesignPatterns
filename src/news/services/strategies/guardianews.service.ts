@@ -2,12 +2,13 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { HttpService } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { GuardianNews, MyNews } from './interfaces/news';
+import { GuardianNews, MyNews } from '../../interfaces/news';
 import { ConfigService } from '@nestjs/config';
-import { codes } from '../utils/helpers';
+import { codes } from '../../../utils/helpers';
+import { Strategy } from 'src/news/interfaces/strategy';
 
 @Injectable()
-export class GuardiaNewsService {
+export class GuardiaNewsService implements Strategy {
   constructor(
     private readonly http: HttpService,
     private readonly configService: ConfigService,
@@ -27,7 +28,7 @@ export class GuardiaNewsService {
     return newArt;
   }
 
-  search(searchedWord: string, page = '1'): Observable<MyNews[]> {
+  search(searchedWord: string, page: string): Observable<MyNews[]> {
     const key = this.configService.get<string>('GUARDIAN_KEY');
     const baseUrl = this.configService.get<string>('GUARDIAN_URL_BASE');
     const filters = this.configService.get<string>('GUARDIAN_URL_FILTERS');

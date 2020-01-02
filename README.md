@@ -33,38 +33,6 @@ $ npm install
 
 - Configure ormconfig.json file on the root directory of the project
 
-## Configuring .env File
-
-### .env example file
-
-#### #New York Time Variables
-
-NYT_URL_BASE=https://api.nytimes.com/svc/search/v2/articlesearch.json?
-
-NYT_URL_FILTERS=&sort=newest&fl=\_id, pub_date, snippet, web_url, byline, headline
-
-NYT_KEY=[Your secret nyt key API]
-
-#### #Guardian Variables
-
-GUARDIAN_URL_BASE=https://content.guardianapis.com/search?
-
-GUARDIAN_URL_FILTERS=&order-by=newest&show-fields=byline&show-tags=contributors
-
-GUARDIAN_KEY=[Your secret guardian key API]
-
-#### #NewsAPI Variables
-
-GUARDIAN_URL_BASE=https://newsapi.org/v2/everything?
-
-GUARDIAN_URL_FILTERS=&pageSize=10
-
-GUARDIAN_KEY=[Your secret newsapi key]
-
-#### #JWT Secret
-
-SECRET_CODE_JWT=[Your secret token]
-
 ## Configuring ormconfig.json File
 
 ### ormconfig.json example file

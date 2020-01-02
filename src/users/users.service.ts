@@ -9,34 +9,24 @@ import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
+import { UserRepository } from './repository/userRepository';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly userRepository: Repository<Users>,
+    private readonly userQueryRepository: UserRepository,
   ) {}
-
-  async getUserByParam(
-    param: string,
-    value: string | number,
-  ): Promise<Users | undefined> {
-    let user: Users | undefined;
-    try {
-      user = await this.userRepository.findOne({
-        where: [{ [param]: value }],
-      });
-    } catch (error) {
-      throw new HttpException('', error);
-    }
-    return user;
-  }
 
   async singup(user: RegisterDto): Promise<Users | undefined> {
     let invalidUsername: Users | undefined;
     let invalidEmail: Users | undefined;
     try {
-      invalidUsername = await this.getUserByParam('username', user.username);
+      invalidUsername = await this.userQueryRepository.getUserByParam(
+        'username',
+        user.username,
+      );
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -44,7 +34,10 @@ export class UsersService {
       throw new ConflictException();
     }
     try {
-      invalidEmail = await this.getUserByParam('email', user.email);
+      invalidEmail = await this.userQueryRepository.getUserByParam(
+        'email',
+        user.email,
+      );
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -67,7 +60,12 @@ export class UsersService {
     userId: number,
     pass: string,
   ): Promise<Users | undefined> {
-    const user = await this.getUserByParam('id', userId);
+    let user: Users | undefined;
+    try {
+      user = await this.userQueryRepository.getUserByParam('id', userId);
+    } catch (error) {
+      throw new HttpException('', error);
+    }
     if (!user) {
       throw new BadRequestException();
     }

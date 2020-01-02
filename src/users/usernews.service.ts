@@ -8,6 +8,9 @@ import {
   UserNewsInterface,
   UserSharedNewsInterface,
 } from './interfaces/usernews';
+import { UserRepository } from './repository/userRepository';
+import { NewsRepository } from 'src/news/repository/newsRepository';
+import { UserNewsRepository } from './repository/userNewsRepository';
 
 @Injectable()
 export class UserNewsService {
@@ -18,6 +21,9 @@ export class UserNewsService {
     private readonly newsRepository: Repository<News>,
     @InjectRepository(NewToUser)
     private readonly newsToUserRepository: Repository<NewToUser>,
+    private readonly userQueryRepository: UserRepository,
+    private readonly newsQueryRepository: NewsRepository,
+    private readonly userNewsQueryRepository: UserNewsRepository,
   ) {}
 
   async saveArticle(
@@ -40,9 +46,7 @@ export class UserNewsService {
       throw new BadRequestException();
     }
     try {
-      news = await this.newsRepository.findOne({
-        where: [{ url }],
-      });
+      news = await this.newsQueryRepository.getNewsByParam('url', url);
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -81,16 +85,7 @@ export class UserNewsService {
   async getArticles(user: number): Promise<UserNewsInterface[] | undefined> {
     let usersNews: Users | undefined;
     try {
-      usersNews = await this.userRepository.findOne({
-        join: {
-          alias: 'user',
-          leftJoinAndSelect: {
-            newsToUser: 'user.newsToUser',
-            news: 'newsToUser.news',
-          },
-        },
-        where: { id: user },
-      });
+      usersNews = await this.userQueryRepository.getNewsFromUser(user);
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -123,16 +118,9 @@ export class UserNewsService {
     }
     let usersNews: NewToUser[];
     try {
-      usersNews = await this.newsToUserRepository.find({
-        join: {
-          alias: 'newsToUser',
-          leftJoinAndSelect: {
-            user: 'newsToUser.user',
-            news: 'newsToUser.news',
-          },
-        },
-        where: { sharedBy: user },
-      });
+      usersNews = await this.userNewsQueryRepository.getSharedNewsFromUser(
+        user,
+      );
     } catch (error) {
       throw new HttpException('', error);
     }

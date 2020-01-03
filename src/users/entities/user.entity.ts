@@ -1,34 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  Unique,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany } from 'typeorm';
 import { NewToUser } from './usernews.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Users {
-  constructor(
-    id: number,
-    username: string,
-    password: string,
-    email: string,
-    lastLogin: Date,
-    createdAt: Date,
-    updatedAt: Date,
-    isActive: boolean,
-  ) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.lastLogin = lastLogin;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.isActive = isActive;
-  }
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -60,5 +35,5 @@ export class Users {
     type => NewToUser,
     newToUser => newToUser.user,
   )
-  public newsToUser!: NewToUser[];
+  public newsToUser: NewToUser[];
 }

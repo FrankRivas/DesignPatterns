@@ -4,10 +4,7 @@ import { HttpException } from '@nestjs/common';
 
 @EntityRepository(Users)
 export class UserRepository extends Repository<Users> {
-  async getUserByParam(
-    param: string,
-    value: string | number,
-  ): Promise<Users | undefined> {
+  async getUserByParam(param: string, value: string | number): Promise<Users | undefined> {
     let user: Users | undefined;
     try {
       user = await this.findOne({

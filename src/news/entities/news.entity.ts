@@ -1,20 +1,8 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  Unique,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany } from 'typeorm';
 import { NewToUser } from 'src/users/entities/usernews.entity';
 
 @Entity()
 export class News {
-  constructor(id: number, url: string, createdAt: Date, isActive: boolean) {
-    this.id = id;
-    this.url = url;
-    this.createdAt = createdAt;
-    this.isActive = isActive;
-  }
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -32,5 +20,5 @@ export class News {
     type => NewToUser,
     newToUser => newToUser.news,
   )
-  public newsToUser!: NewToUser[];
+  public newsToUser: NewToUser[];
 }

@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
 
 export class ShareDto {
   @IsNotEmpty()
   @IsUrl()
   url: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   user: number;
 

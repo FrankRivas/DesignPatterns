@@ -1,7 +1,9 @@
 import { Strategy } from '../interfaces/strategy';
 import { Observable } from 'rxjs';
 import { MyNews } from '../interfaces/news';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class StrategyContext {
   private strategy!: Strategy;
 

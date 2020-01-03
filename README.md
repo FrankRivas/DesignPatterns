@@ -101,16 +101,18 @@ An anti-pattern is a way to solve problems, however, generally, this way in whic
 #### Implementing Dependency Inyection
 
 To implement the dependency injection, it is necessary to have two classes, of which one will be injected to the other, said injection can be done through the constructor or through a function that performs the injection.
-The class that will receive the injection of dependencies, must have an attribute whose type corresponds to the second class in question and may have a constructor that receives as a parameter the second class, if the constructor is owned, the injection of dependencies will be carried out through the , if you don't have a builder, you must have a function that allows this action.
+
+The class that will receive the injection of dependencies, must have an attribute whose type corresponds to the second class in question and may have a constructor that receives as a parameter the second class, if the constructor exist, the injection of dependencies will be carried out through it, if you don't have a constructor, you must have a function that allows this action.
 The method mentioned above is to perform a simple dependency injection.
 
 To make a more robust dependency injection, we can use an interface, which will be used by both classes, in the first class (the one that will receive the dependency injection), that interface will be used to assign it as the type of its attribute in the which injection of dependencies will be saved. In the second class (the one that will be injected) will implement said interface and with that all the methods and attributes that are defined in it.
 
 #### Dependency Inyection Example
 
+##### Simple Dependency Injection
+
 ```typescript
 // class player
-
 class Player {
   private team: Team;
   constructor(team: Team) {
@@ -119,13 +121,12 @@ class Player {
   setTeam(team: Team): void {
     this.team = team;
   }
-  getTeam(): Team {
-    return this.team;
+  getTeam(): string {
+    return this.team.getTeam();
   }
 }
 
 // class team
-
 class Team {
   private name: string;
   constructor(name: string) {
@@ -137,9 +138,50 @@ class Team {
 }
 
 // class main
-
 const player = new Player(new Team('Arsenal'));
 console.log(player.getTeam());
+```
+
+##### Dependency Injection Using Interfaces
+
+```typescript
+// Logger Interface
+interface logger {
+  getLoggerType(): string;
+}
+
+// Database logger class
+class DBlogger implements logger {
+  getLoggerType(): string {
+    return 'this is a DB logger';
+  }
+}
+
+// Aplication logger class
+class AppLogger implements logger {
+  getLoggerType(): string {
+    return 'this is a Application logger';
+  }
+}
+
+// Aplication class
+class Application {
+  private logger: logger;
+  constructor(logger: logger) {
+    this.logger = logger;
+  }
+  getLoggerType(): string {
+    return this.logger.getLoggerType();
+  }
+}
+
+// main class
+const logger1 = new DBlogger();
+const logger2 = new AppLogger();
+const app1 = new Application(logger1);
+const app2 = new Application(logger2);
+console.log(app1.getLoggerType());
+console.log(app2.getLoggerType());
 ```
 
 ### Second Part

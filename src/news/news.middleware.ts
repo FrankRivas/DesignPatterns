@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NestMiddleware,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware, BadRequestException } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Injectable()

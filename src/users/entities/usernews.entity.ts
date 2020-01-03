@@ -11,17 +11,17 @@ export class NewToUser {
     type => News,
     news => news.newsToUser,
   )
-  public news!: News;
+  public news: News;
 
   @ManyToOne(
     type => Users,
     user => user.newsToUser,
   )
-  public user!: Users;
+  public user: Users;
 
   @Column({ nullable: true })
-  sharedBy!: number;
+  sharedBy: number;
 
   @Column({ default: new Date() })
-  createdAt!: Date;
+  createdAt: Date;
 }

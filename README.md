@@ -18,7 +18,7 @@
 - Clone the repository
 
 ```bash
-$ git clone https://github.com/FrankRivas/NestNewsApiv2
+$ git clone https://github.com/FrankRivas/DesignPatterns.git
 ```
 
 - Install dependencies
@@ -31,23 +31,6 @@ $ npm install
 
 - Configure .env file on the root directory of the project
 
-- Configure ormconfig.json file on the root directory of the project
-
-## Configuring ormconfig.json File
-
-### ormconfig.json example file
-
-{
-"type": "postgres",
-"host": "localhost",
-"port": 5432,
-"username": [Your username],
-"password": [Your password],
-"database": [Your database name],
-"entities": ["dist/**/*.entity{.ts,.js}"],
-"synchronize": true
-}
-
 ## Restore Database
 
 psql [DB name] < database/backup
@@ -58,24 +41,11 @@ psql [DB name] < database/backup
 # development
 $ npm run start
 
-# watch mode
+# watch mode (recommended)
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Getting token

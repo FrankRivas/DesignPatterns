@@ -70,11 +70,11 @@ https://documenter.getpostman.com/view/3221284/SWLb8UW3
 
 1. Which patterns does Nest.JS use? Why? How are they implemented?
 
-- Singleton
-- Chain of Responsability
-- Decorator
-- Factory Method
-- Dependency Injection
+- Singleton: Nest uses singleton in the instantiation of each of the components of the application, among which providers are mentioned, the different imports that are made in the different modules, among others.
+- Chain of Responsibility: It is implemented in some scenarios, such as in middleware, since these may or may not perform an operation if appropriate or go to the next one, another case in which it is used is when the components of the api and nest goes looking for how to meet the different dependencies defined.
+- Decorator: Nest uses decorators to perform different actions within the program, these decorators allow the use of middlewares, definition of classes of injectable type, entity, among others.
+- Factory Method: It is used at the time of creation of the application instance within the main.ts file
+- Dependency Injection: Nest uses dependency injection in the different providers that are defined within each module
 
 2. Which patterns can be used on your application? How those patterns could be implemented?
 
@@ -83,10 +83,16 @@ https://documenter.getpostman.com/view/3221284/SWLb8UW3
 - Decorator
 - Factory Method
 - Dependency Injection
-- Repository
-- Strategy
+
+The patterns mentioned above will be implemented in the way nest does by default.
+
+- Repository: It will be implemented using TypeOrmModule, creating custom repositories, which will extend from the different repositories managed by the TypeORM, said repositories will be used to separate the data access logic from the services logic, the new custom repositories will be used instead of those provided by TypeOrmModule.
+- Strategy: It will be implemented in two cases: in the first, making use of the different authentication strategies managed by the Passport library, in the second case, the implementation will be carried out within the news search functionality in third-party apis, having as a premise that each type of search would represent a search strategy, for its implementation, 3 strategy files will be created, 1 file to handle the context of the strategy, 1 file for interface management and the service that will be responsible for managing The context class.
+
 - Observer
 - Iterator
+
+The patterns mentioned above (Observe and Iterator) will be implemented through the rxjs library, within the functionality of consulting the news apis, nest works in conjunction with rxjs, so when using the http module and consulting the different apis, they return objects observables, which are subsequently iterated and treated to be able to display the information extracted from the api
 
 3. Explain in your own words, what an antipattern is. Also, explain how to implement the Dependency Injection pattern in Typescript (with an example)
 
@@ -104,9 +110,9 @@ An anti-pattern is a way to solve problems, however, generally, this way in whic
 
 1. Implement at least 2 design patterns in your API (the ones implemented by Nest.js won't be taken into account). Why did you use them?
 
-- Strategy Design Pattern
-- Decorator Design Pattern
-- Repository Design Pattern
+- Strategy Design Pattern: I used the Strategy pattern because the problem that this pattern seeks to solve coincides with the requirement to search for news in third-party APIS. For its implementation, it was taken as consideration that each of the apis consulted represented a search strategy, taking that into account, create an interface that had two methods, search and transform, which should be implemented by any search strategy to be added to the api.
+
+- Repository Design Pattern: I used the Repository pattern to separate the data management logic from the logic managed in the different services that the different functionalities of the api provide, separating these logics, the principle of sole responsibility is also fulfilled.
 
 2. Remove all antipatterns that you can found on your API side. Why did you think it is an antipattern?
 

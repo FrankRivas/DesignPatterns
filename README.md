@@ -109,35 +109,37 @@ To make a more robust dependency injection, we can use an interface, which will 
 #### Dependency Inyection Example
 
 ```typescript
-
 // class player
 
-class player{
-  import Team from './team.ts'
-  private team: Team
-  constructor(team: Team): void{
-    this.team = team
+class Player {
+  private team: Team;
+  constructor(team: Team) {
+    this.team = team;
   }
-  setTeam(team: Team):void{
-    this.team = team
+  setTeam(team: Team): void {
+    this.team = team;
+  }
+  getTeam(): Team {
+    return this.team;
   }
 }
 
 // class team
 
-class team{
-  private name
-  constructor(name: string):void{
-    this.name = name
+class Team {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
   }
-  getTeam():string{
-    return this.name
+  getTeam(): string {
+    return this.name;
   }
 }
 
 // class main
 
-player = new player(new team('Juventus'))
+const player = new Player(new Team('Arsenal'));
+console.log(player.getTeam());
 ```
 
 ### Second Part

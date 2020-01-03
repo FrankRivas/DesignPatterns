@@ -92,7 +92,7 @@ The patterns mentioned above will be implemented in the way nest does by default
 - Observer
 - Iterator
 
-The patterns mentioned above (Observe and Iterator) will be implemented through the rxjs library, within the functionality of consulting the news apis, nest works in conjunction with rxjs, so when using the http module and consulting the different apis, they return objects observables, which are subsequently iterated and treated to be able to display the information extracted from the api
+The patterns mentioned above (Observer and Iterator) will be implemented through the rxjs library, within the functionality of consulting the news apis, nest works in conjunction with rxjs, so when using the http module and consulting the different apis, they return objects observables, which are subsequently iterated and treated to be able to display the information extracted from the api
 
 3. Explain in your own words, what an antipattern is. Also, explain how to implement the Dependency Injection pattern in Typescript (with an example)
 

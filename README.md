@@ -98,12 +98,46 @@ The patterns mentioned above (Observer and Iterator) will be implemented through
 
 An anti-pattern is a way to solve problems, however, generally, this way in which we solve a given problem can lead to more problems when trying to maintain the application, so it could be said that the application does not it can be scalable or this process would have greater difficulty than it would have when having implemented the correct design patterns.
 
+#### Implementing Dependency Inyection
+
+To implement the dependency injection, it is necessary to have two classes, of which one will be injected to the other, said injection can be done through the constructor or through a function that performs the injection.
+The class that will receive the injection of dependencies, must have an attribute whose type corresponds to the second class in question and may have a constructor that receives as a parameter the second class, if the constructor is owned, the injection of dependencies will be carried out through the , if you don't have a builder, you must have a function that allows this action.
+The method mentioned above is to perform a simple dependency injection.
+
+To make a more robust dependency injection, we can use an interface, which will be used by both classes, in the first class (the one that will receive the dependency injection), that interface will be used to assign it as the type of its attribute in the which injection of dependencies will be saved. In the second class (the one that will be injected) will implement said interface and with that all the methods and attributes that are defined in it.
+
 #### Dependency Inyection Example
 
 ```typescript
-// class x
 
-// class y
+// class player
+
+class player{
+  import Team from './team.ts'
+  private team: Team
+  constructor(team: Team): void{
+    this.team = team
+  }
+  setTeam(team: Team):void{
+    this.team = team
+  }
+}
+
+// class team
+
+class team{
+  private name
+  constructor(name: string):void{
+    this.name = name
+  }
+  getTeam():string{
+    return this.name
+  }
+}
+
+// class main
+
+player = new player(new team('Juventus'))
 ```
 
 ### Second Part

@@ -8,6 +8,8 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   ParseIntPipe,
+  UnprocessableEntityException,
+  ConflictException,
 } from '@nestjs/common';
 import { UsersService } from './services/users.service';
 import { RegisterDto } from '../users/dto/register.dto';
@@ -15,11 +17,12 @@ import { Users } from './entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { UserNewsService } from './services/usernews.service';
-import { ShareDto } from './dto/share.dto';
+import { ShareDto } from './dto/sharenews.dto';
 import { UserDto } from './dto/users.dto';
 import { SaveNewsDto } from './dto/savenews.dto';
 import { PasswordDto } from './dto/password.dto';
 import { User } from './decorators/userDecorator';
+import { UserEntitySerializer } from './serializers/userSerializer';
 
 @Controller('users')
 export class UsersController {
@@ -31,8 +34,12 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('/signup')
-  signup(@Body() user: RegisterDto): Promise<Users | undefined> {
-    return this.userService.singup(user);
+  async signup(@Body() user: RegisterDto): Promise<Users | undefined> {
+    try {
+      return new UserEntitySerializer(await this.userService.singup(user));
+    } catch {
+      throw new ConflictException();
+    }
   }
 
   @UseGuards(AuthGuard('local'))
@@ -67,11 +74,15 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post(':userId/changePassword')
-  changePassword(
+  async changePassword(
     @Body() pass: PasswordDto,
     @Param('userId', new ParseIntPipe()) userId: number,
-  ): Promise<Users | undefined> {
-    return this.userService.changePassword(userId, pass.password);
+  ): Promise<UserEntitySerializer | undefined> {
+    try {
+      return new UserEntitySerializer(await this.userService.changePassword(userId, pass.password));
+    } catch {
+      throw new UnprocessableEntityException();
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))

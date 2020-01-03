@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  HttpException,
-  ConflictException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, HttpException, ConflictException, BadRequestException } from '@nestjs/common';
 import { Users } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from '../dto/register.dto';
@@ -13,14 +8,11 @@ import { UserRepository } from '../repositories/userRepository';
 export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async singup(user: RegisterDto): Promise<Users | undefined> {
+  async singup(user: RegisterDto): Promise<Users> {
     let invalidUsername: Users | undefined;
     let invalidEmail: Users | undefined;
     try {
-      invalidUsername = await this.userRepository.getUserByParam(
-        'username',
-        user.username,
-      );
+      invalidUsername = await this.userRepository.getUserByParam('username', user.username);
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -28,10 +20,7 @@ export class UsersService {
       throw new ConflictException();
     }
     try {
-      invalidEmail = await this.userRepository.getUserByParam(
-        'email',
-        user.email,
-      );
+      invalidEmail = await this.userRepository.getUserByParam('email', user.email);
     } catch (error) {
       throw new HttpException('', error);
     }
@@ -50,10 +39,7 @@ export class UsersService {
     }
   }
 
-  async changePassword(
-    userId: number,
-    pass: string,
-  ): Promise<Users | undefined> {
+  async changePassword(userId: number, pass: string): Promise<Users> {
     let user: Users | undefined;
     try {
       user = await this.userRepository.getUserByParam('id', userId);

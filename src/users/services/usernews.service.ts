@@ -2,10 +2,7 @@ import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
 import { Users } from '../entities/user.entity';
 import { News } from '../../news/entities/news.entity';
 import { NewToUser } from '../entities/usernews.entity';
-import {
-  UserNewsInterface,
-  UserSharedNewsInterface,
-} from '../interfaces/usernews';
+import { UserNewsInterface, UserSharedNewsInterface } from '../interfaces/usernews';
 import { UserRepository } from '../repositories/userRepository';
 import { NewsRepository } from 'src/news/repositories/newsRepository';
 import { UserNewsRepository } from '../repositories/userNewsRepository';
@@ -20,11 +17,8 @@ export class UserNewsService {
     private readonly transformDataService: TransformDataService,
   ) {}
 
-  async saveArticle(
-    url: string,
-    userId: number,
-    toUserId?: number,
-  ): Promise<{}> {
+  // If toUserId is undefined, It is understood that the user wishes to save the news, otherwise, it will be shared
+  async saveArticle(url: string, userId: number, toUserId?: number): Promise<{}> {
     let user: Users | undefined;
     let news: News | undefined;
     let toUser: Users | undefined;
@@ -77,14 +71,10 @@ export class UserNewsService {
     if (!usersNews) {
       throw new BadRequestException();
     }
-    return usersNews?.newsToUser.map(
-      this.transformDataService.transformDataMyNews,
-    );
+    return usersNews?.newsToUser.map(this.transformDataService.transformDataMyNews);
   }
 
-  async getSharedArticles(
-    user: number,
-  ): Promise<UserSharedNewsInterface[] | undefined> {
+  async getSharedArticles(user: number): Promise<UserSharedNewsInterface[] | undefined> {
     let userFromDB: Users | undefined;
     try {
       userFromDB = await this.userRepository.findOne(user);

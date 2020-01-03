@@ -19,6 +19,7 @@ export class NewsService {
     private readonly guardiaNewService: GuardiaNewsService,
     private readonly nytnewsService: NYTNewsService,
     private readonly newsApiService: NewsAPIService,
+    private readonly strategyContext: StrategyContext,
   ) {}
   searchNews(
     searcher: string | undefined,
@@ -28,26 +29,26 @@ export class NewsService {
     let searchGuardian;
     let searchNYT;
     let searchNewsApi;
-    const searchStrategy = new StrategyContext();
+
     if (!searcher) {
-      searchStrategy.setStrategy(this.nytnewsService);
-      searchNYT = searchStrategy.searchNews(searchedWord, page);
-      searchStrategy.setStrategy(this.guardiaNewService);
-      searchGuardian = searchStrategy.searchNews(searchedWord, page);
-      searchStrategy.setStrategy(this.newsApiService);
-      searchNewsApi = searchStrategy.searchNews(searchedWord, page);
+      this.strategyContext.setStrategy(this.nytnewsService);
+      searchNYT = this.strategyContext.searchNews(searchedWord, page);
+      this.strategyContext.setStrategy(this.guardiaNewService);
+      searchGuardian = this.strategyContext.searchNews(searchedWord, page);
+      this.strategyContext.setStrategy(this.newsApiService);
+      searchNewsApi = this.strategyContext.searchNews(searchedWord, page);
       return this.mergeNews(searchNYT, searchGuardian, searchNewsApi);
     }
     switch (searcher) {
       case searchers[0]:
-        searchStrategy.setStrategy(this.nytnewsService);
-        return searchStrategy.searchNews(searchedWord, page);
+        this.strategyContext.setStrategy(this.nytnewsService);
+        return this.strategyContext.searchNews(searchedWord, page);
       case searchers[1]:
-        searchStrategy.setStrategy(this.guardiaNewService);
-        return searchStrategy.searchNews(searchedWord, page);
+        this.strategyContext.setStrategy(this.guardiaNewService);
+        return this.strategyContext.searchNews(searchedWord, page);
       case searchers[2]:
-        searchStrategy.setStrategy(this.newsApiService);
-        return searchStrategy.searchNews(searchedWord, page);
+        this.strategyContext.setStrategy(this.newsApiService);
+        return this.strategyContext.searchNews(searchedWord, page);
       default:
         throw new NotFoundException('Invalid url');
     }

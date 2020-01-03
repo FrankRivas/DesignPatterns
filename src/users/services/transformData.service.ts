@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NewToUser } from '../entities/usernews.entity';
-import {
-  UserSharedNewsInterface,
-  UserNewsInterface,
-} from '../interfaces/usernews';
+import { UserSharedNewsInterface, UserNewsInterface } from '../interfaces/usernews';
 
 @Injectable()
 export class TransformDataService {

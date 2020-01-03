@@ -12,19 +12,9 @@ import { NewsService } from './services/news.service';
 import { StrategyContext } from './services/searchStrategyContext';
 
 @Module({
-  imports: [
-    ConfigModule,
-    HttpModule,
-    TypeOrmModule.forFeature([News, NewsRepository]),
-  ],
+  imports: [ConfigModule, HttpModule, TypeOrmModule.forFeature([News, NewsRepository])],
   controllers: [NewsController],
-  providers: [
-    GuardiaNewsService,
-    NYTNewsService,
-    NewsAPIService,
-    NewsService,
-    StrategyContext,
-  ],
+  providers: [GuardiaNewsService, NYTNewsService, NewsAPIService, NewsService, StrategyContext],
   exports: [TypeOrmModule],
 })
 export class NewsModule {

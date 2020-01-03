@@ -15,12 +15,7 @@ import { TransformDataService } from './services/transformData.service';
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([
-      Users,
-      NewToUser,
-      UserRepository,
-      UserNewsRepository,
-    ]),
+    TypeOrmModule.forFeature([Users, NewToUser, UserRepository, UserNewsRepository]),
     AuthModule,
     NewsModule,
   ],

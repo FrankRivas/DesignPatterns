@@ -70,11 +70,11 @@ https://documenter.getpostman.com/view/3221284/SWLb8UW3
 
 1. Which patterns does Nest.JS use? Why? How are they implemented?
 
-- Singleton: Nest uses singleton in the instantiation of each of the components of the application, among which providers are mentioned, the different imports that are made in the different modules, among others.
+- Singleton: Nest uses the singleton design pattern from the moment the server starts, since it is at this point that it performs the instantiation of the different modules that comprise the api and with it all the providers, controllers and others elements. in this process, unique instances are created, which are used in the execution process, in the same way, the imports defined in each of the services are instantiated using the singleton pattern.
 - Chain of Responsibility: It is implemented in some scenarios, such as in middleware, since these may or may not perform an operation if appropriate or go to the next one, another case in which it is used is when the components of the api and nest goes looking for how to meet the different dependencies defined.
 - Decorator: Nest uses decorators to perform different actions within the program, these decorators allow the use of middlewares, definition of classes of injectable type, entity, among others.
-- Factory Method: It is used at the time of creation of the application instance within the main.ts file
-- Dependency Injection: Nest uses dependency injection in the different providers that are defined within each module
+- Factory Method: used at the time of starting the nest project, every nest project in the root has a main.ts file, in which the NestFactory class is used, which has different methods that allow among other things the creation of the application instance
+- Dependency Injection: Nest uses dependency injection in the different providers that are defined within each module, since a file has the @Injectable decorator, it can be injected to other providers and modules, nest supports dependency injections in the provider constructors, as well as in asynchronous configurations within the modules using the Inject keyword.
 
 2. Which patterns can be used on your application? How those patterns could be implemented?
 
@@ -87,12 +87,10 @@ https://documenter.getpostman.com/view/3221284/SWLb8UW3
 The patterns mentioned above will be implemented in the way nest does by default.
 
 - Repository: It will be implemented using TypeOrmModule, creating custom repositories, which will extend from the different repositories managed by the TypeORM, said repositories will be used to separate the data access logic from the services logic, the new custom repositories will be used instead of those provided by TypeOrmModule.
+
 - Strategy: It will be implemented in two cases: in the first, making use of the different authentication strategies managed by the Passport library, in the second case, the implementation will be carried out within the news search functionality in third-party apis, having as a premise that each type of search would represent a search strategy, for its implementation, 3 strategy files will be created, 1 file to handle the context of the strategy, 1 file for interface management and the service that will be responsible for managing The context class.
 
-- Observer
-- Iterator
-
-The patterns mentioned above (Observer and Iterator) will be implemented through the rxjs library, within the functionality of consulting the news apis, nest works in conjunction with rxjs, so when using the http module and consulting the different apis, they return objects observables, which are subsequently iterated and treated to be able to display the information extracted from the api
+- Observer: will be implemented through the rxjs library, within the functionality of consulting the news apis, nest works in conjunction with rxjs, so when using the http module and consulting the different apis, they return objects observables, which are subsequently iterated and treated to be able to display the information extracted from the api
 
 3. Explain in your own words, what an antipattern is. Also, explain how to implement the Dependency Injection pattern in Typescript (with an example)
 
@@ -192,9 +190,11 @@ console.log(app2.getLoggerType());
 
 - Repository Design Pattern: I used the Repository pattern to separate the data management logic from the logic managed in the different services that the different functionalities of the api provide, separating these logics, the principle of sole responsibility is also fulfilled.
 
+- Observer: I implement this pattern in order to do the search news functionaity in third-party apis, I implement this pattern with the help of the rxjs library and the http module, since the http module after consulting the api an observable object returned, which was then operated to be able to display the information to the user. Nest using http Module automatically subscribed to the object, so the information was accessed without having to do this step manually.
+
 2. Remove all antipatterns that you can found on your API side. Why did you think it is an antipattern?
 
-Anti patterns removed
+##### Anti patterns removed
 
 - The lava flow: Within some files it had code fragments that were not used, specifically, within the pipes folder, there was a pipe that was not used in the application, likewise, within the app it had also kept the files generated by default by nest. To correct this anti pattern, I removed all the code blocks that were not used as well as all those default nest files that had no purpose within the api
 
@@ -204,7 +204,7 @@ Anti patterns removed
 
 3. Which patterns did you use? Which antipatterns did you remove? (if any)
 
-Design Pattern Used
+##### Design Pattern Used
 
 Provided by Nest
 
@@ -219,9 +219,8 @@ Others
 - Repository
 - Strategy
 - Observer
-- Iterator
 
-Anti-Patterns Removed
+##### Anti-Patterns Removed
 
 - Lava Flow
 - The Blob
